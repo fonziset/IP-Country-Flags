@@ -1,0 +1,22 @@
+services:
+    threedi.ipcf.listener:
+        class: threedi\ipcf\event\listener
+        arguments:
+            - '@auth'
+            - '@cache'
+            - '@config'
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '@threedi.ipcf.ipcf_functions'
+
+        tags:
+            - { name: event.listener }
+
+    threedi.ipcf.ipcf_functions:
+        class: threedi\ipcf\core\ipcf_functions
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@ext.manager'
+            - '@path_helper'

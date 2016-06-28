@@ -1,0 +1,31 @@
+{
+	"name": "threedi/ipcf",
+	"type": "phpbb-extension",
+	"description": "A kind of Country Flags invasion for your phpBB",
+	"homepage": "http://3di.space/32/",
+	"version": "1.0.0-dev",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "3Di",
+			"email": "three3di@hotmail.it",
+			"homepage": "http://3di.space/32/",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3",
+		"phpbb/phpbb": ">=3.1.9,<3.3.0@dev"
+	},
+	"extra": {
+		"display-name": "IP Country Flag",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.9,<3.3.0@dev"
+		},
+		"version-check": {
+			"host": "www.phpbb.com",
+			"directory": "/customise/db/extension/ip_country_flag",
+			"filename": "version_check"
+		}
+	}
+}
