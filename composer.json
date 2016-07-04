@@ -3,12 +3,11 @@
 	"type": "phpbb-extension",
 	"description": "A kind of Country Flags invasion for your phpBB",
 	"homepage": "http://3di.space/32/",
-	"version": "1.0.0-dev",
+	"version": "1.0.0-dev-v0002",
 	"license": "GPL-2.0",
 	"authors": [
 		{
 			"name": "3Di",
-			"email": "three3di@hotmail.it",
 			"homepage": "http://3di.space/32/",
 			"role": "Lead Developer"
 		}

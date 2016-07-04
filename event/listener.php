@@ -104,29 +104,40 @@ class listener implements EventSubscriberInterface
 
 	public function viewtopic_flags($event)
 	{
-		$user_id = $event['post_row']['POSTER_ID'];
-
-		/* Config time for cache, hinerits from View online time span */
-		$config_time_cache = ( (int) ($this->config['load_online_time'] * 60) );
-
-		/* Check cached data */
-		if ( ($row = $this->cache->get('_ipcf_viewtopic') ) === false)
+		/* Check permission before to run the code */
+		if ($this->auth->acl_get('u_allow_ipcf'))
 		{
-			/* Self-explanatory, isn't? */
-			$user_session_ip = ( (string) $this->ipcf_functions->obtain_session_ip($user_id) );
+			$user_id = $event['post_row']['POSTER_ID'];
 
-			/* Caching this data improves performance */
-			$this->cache->put('_ipcf_viewtopic', $row, (int) $config_time_cache);
+			/* Config time for cache, hinerits from View online time span */
+			//$config_time_cache = ( (int) ($this->config['load_online_time'] * 60) );
+
+			/* Self-explanatory, isn't? */
+			$user_session_ip = $this->user->ip;
+
+			/**
+			 * The Flag Image itself lies here
+			 * First we check if cURL is available here
+			*/
+			$is_curl = $this->ipcf_functions->is_curl();
+
+			if ($is_curl)
+			{
+				$country_flag = ( $this->ipcf_functions->obtain_country_flag_string_curl($user_session_ip) );
+			}
+			/**
+			 * No cURL? Let's try another approach with file_get_contents
+			*/
+			else
+			{
+				$country_flag = ( $this->ipcf_functions->obtain_country_flag_string_fcg($user_session_ip) );
+			}
+
+			$flag_output = array('COUNTRY_FLAG'	=>	$country_flag);
+			$event['post_row'] = array_merge($event['post_row'], $flag_output);
 		}
 
-		/* The Flag Image itself lies here */
-		$country_flag = ( $this->ipcf_functions->obtain_country_flag_string($user_session_ip) );
-
-		$template_output = array('COUNTRY_FLAG'	=>	$country_flag);
-
-		$event['post_row'] = array_merge($event['post_row'], $template_output);
-
-		// template stuffs, as usual
+		/* template stuffs, as usual */
 		$this->template->assign_vars(array(
 			'S_IPCF'	=>	($this->auth->acl_get('u_allow_ipcf')) ? true : false,
 		));
