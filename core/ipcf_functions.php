@@ -131,7 +131,7 @@ class ipcf_functions
 			else if ($ip_array['status'] != 'success')
 			{
 				/**
-				 WO represents my flag of World, aka Unknown IP
+				 * WO represents my flag of World, aka Unknown IP
 				*/
 				$failure =  ipcf_constants::FLAG_WORLD;
 				$iso_country_code =  strtolower($failure);
