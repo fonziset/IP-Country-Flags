@@ -96,6 +96,18 @@ class ipcf_functions
 // TODO: handling the future implementation of Flag Normal and Flag Avatar
 // Flag Small is right for topics and posts and so on..
 
+// TODO: obtain an array of avatars to compare with the response result
+// because (avatars are less than the usual flags)
+/*
+	$avatars_array = array();
+
+	if ($ip_array['status'] == 'success' && !in_array($ip_array['countryCode'], $avatars_array))
+	{
+		// IP not in available as Avatar
+		$flag = missing avatar image for country flag response
+	}
+*/
+
 	/**
 	 * Obtain Country Flag string from cURL
 	 *
@@ -191,6 +203,35 @@ class ipcf_functions
 			$iso_country_code =  strtolower($failure);
 			$country_flag = $this->iso_to_flag_string_small($iso_country_code);
 		}
+
+		return ($country_flag);
+	}
+
+	/**
+	 * Obtain Country Flag string
+	 *
+	 * @return string country_flag
+	 */
+	public function obtain_country_flag_string($user_session_ip)
+	{
+		/**
+		 * The Flag Image itself lies here
+		 * First we check if cURL is available here
+		*/
+		$is_curl = $this->is_curl();
+
+		if ($is_curl)
+		{
+			$country_flag = ( $this->obtain_country_flag_string_curl($user_session_ip) );
+		}
+		/**
+		 * No cURL? Let's try another approach with file_get_contents
+		*/
+		else
+		{
+			$country_flag = ( $this->obtain_country_flag_string_fcg($user_session_ip) );
+		}
+
 		return ($country_flag);
 	}
 }

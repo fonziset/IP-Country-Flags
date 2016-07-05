@@ -73,9 +73,10 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.user_setup'					=>	'load_language_on_setup',
-			'core.viewtopic_modify_post_row'	=>	'viewtopic_flags',
-			'core.permissions'					=>	'permissions',
+			'core.user_setup'							=>	'load_language_on_setup',
+			'core.permissions'							=>	'permissions',
+			'core.viewtopic_modify_post_row'			=>	'viewtopic_flags',
+			'core.obtain_users_online_string_modify'	=>	'users_online_string_flags',
 		);
 	}
 
@@ -102,6 +103,9 @@ class listener implements EventSubscriberInterface
 		$event['permissions'] = $permissions;
 	}
 
+	/* Config time for cache, hinerits from View online time span */
+	//$config_time_cache = ( (int) ($this->config['load_online_time'] * 60) ); // not yet in use
+
 	public function viewtopic_flags($event)
 	{
 		/* Check permission before to run the code */
@@ -109,29 +113,13 @@ class listener implements EventSubscriberInterface
 		{
 			$user_id = $event['post_row']['POSTER_ID'];
 
-			/* Config time for cache, hinerits from View online time span */
-			//$config_time_cache = ( (int) ($this->config['load_online_time'] * 60) );
-
 			/* Self-explanatory, isn't? */
 			$user_session_ip = $this->user->ip;
 
 			/**
 			 * The Flag Image itself lies here
-			 * First we check if cURL is available here
 			*/
-			$is_curl = $this->ipcf_functions->is_curl();
-
-			if ($is_curl)
-			{
-				$country_flag = ( $this->ipcf_functions->obtain_country_flag_string_curl($user_session_ip) );
-			}
-			/**
-			 * No cURL? Let's try another approach with file_get_contents
-			*/
-			else
-			{
-				$country_flag = ( $this->ipcf_functions->obtain_country_flag_string_fcg($user_session_ip) );
-			}
+			$country_flag = $this->ipcf_functions->obtain_country_flag_string($user_session_ip);
 
 			$flag_output = array('COUNTRY_FLAG'	=>	$country_flag);
 			$event['post_row'] = array_merge($event['post_row'], $flag_output);
@@ -141,5 +129,31 @@ class listener implements EventSubscriberInterface
 		$this->template->assign_vars(array(
 			'S_IPCF'	=>	($this->auth->acl_get('u_allow_ipcf')) ? true : false,
 		));
+	}
+
+// TODO : using php event to set template switch for css?
+
+	public function users_online_string_flags($event)
+	{
+		/* Check permission before to run the code */
+		if ($this->auth->acl_get('u_allow_ipcf'))
+		{
+			$user_session_ip = $this->user->ip;
+
+			$rowset = $event['rowset'];
+			$user_online_link = $event['user_online_link'];
+			$online_userlist = $event['online_userlist'];
+
+			$flag = array();
+			foreach($rowset as $key => $value)
+			{
+				$flag[$value['user_id']] = $this->ipcf_functions->obtain_country_flag_string($user_session_ip);
+			}
+			foreach($user_online_link as $key => $value)
+			{
+				$user_online_link[$key] = $flag[$key] . ' ' . $user_online_link[$key];
+			}
+			$event['online_userlist'] = $this->user->lang['REGISTERED_USERS'] . ' ' . implode(', ', $user_online_link);
+		}
 	}
 }
