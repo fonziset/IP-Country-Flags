@@ -1,0 +1,11 @@
+Changes Log of IPCF 31-32
+
+- v1.0.0-dev-v0002 - (04/05 Jul 2016)
+-------------------------------------------------------------------------------
+* code improvement (the only one SQL query has been removed)
+* use of cURL where is available
+* use of constants
+* new functions added
+* version checker added
+* avatars moved to the final destination
+
