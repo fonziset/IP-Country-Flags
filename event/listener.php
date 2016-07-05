@@ -145,11 +145,11 @@ class listener implements EventSubscriberInterface
 			$online_userlist = $event['online_userlist'];
 
 			$flag = array();
-			foreach($rowset as $key => $value)
+			foreach ($rowset as $key => $value)
 			{
 				$flag[$value['user_id']] = $this->ipcf_functions->obtain_country_flag_string($user_session_ip);
 			}
-			foreach($user_online_link as $key => $value)
+			foreach ($user_online_link as $key => $value)
 			{
 				$user_online_link[$key] = $flag[$key] . ' ' . $user_online_link[$key];
 			}
