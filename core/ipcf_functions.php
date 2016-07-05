@@ -88,7 +88,7 @@ class ipcf_functions
 	 */
 	public function iso_to_flag_string_avatar($iso_country_code)
 	{
-		$country_flag = '<img class="flag_image_avatar" src="' . $this->ext_path_web . 'images/avatars/galley/avatar_flags/' .  $iso_country_code . '.gif" alt="' . $this->user->lang['country'][strtoupper($iso_country_code)] . '" title="' . $this->user->lang['country'][strtoupper($iso_country_code)] . '" />';
+		$country_flag = '<img class="flag_image_avatar" src="' . $this->ext_path_web . 'images/avatars/' .  $iso_country_code . '.gif" alt="' . $this->user->lang['country'][strtoupper($iso_country_code)] . '" title="' . $this->user->lang['country'][strtoupper($iso_country_code)] . '" />';
 
 		return $country_flag;
 	}
