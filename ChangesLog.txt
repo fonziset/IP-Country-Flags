@@ -9,4 +9,4 @@ Changes Log of IPCF 31-32
 * new functions added
 * a working version checker
 * avatars Flags' folder moved to the final destination
-
+* style moved to prosilver only
