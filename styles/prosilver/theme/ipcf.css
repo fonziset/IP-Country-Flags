@@ -1,0 +1,15 @@
+.flag_image_small {
+	width: 14px
+	height: 10px;
+	vertical-align: middle;
+}
+
+.flag_image_normal {
+	width: 18px
+	height: 12px;
+	vertical-align: middle;
+}
+
+.flag_image_avatar {
+	margin-left: 8px;
+}
